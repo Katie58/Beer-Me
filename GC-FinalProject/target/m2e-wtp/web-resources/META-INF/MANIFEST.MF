@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: Momster
+Build-Jdk: 10.0.2
+Implementation-Title: beer-me
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: co.finalfour
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/beer-me
+Created-By: Maven Integration for Eclipse
+

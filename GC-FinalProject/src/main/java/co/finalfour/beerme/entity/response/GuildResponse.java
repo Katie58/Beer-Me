@@ -1,0 +1,61 @@
+package co.finalfour.beerme.entity.response;
+
+import java.util.List;
+
+import co.finalfour.beerme.entity.location.Guild;
+
+public class GuildResponse {
+
+	private Integer currentPage;
+	private Integer numberOfPages;
+	private Integer totalResults;
+	private List<Guild> data;
+	private String status;
+	
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+	
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+	
+	public Integer getNumberOfPages() {
+		return numberOfPages;
+	}
+	
+	public void setNumberOfPages(Integer numberOfPages) {
+		this.numberOfPages = numberOfPages;
+	}
+	
+	public Integer getTotalResults() {
+		return totalResults;
+	}
+	
+	public void setTotalResults(Integer totalResults) {
+		this.totalResults = totalResults;
+	}
+	
+	public List<Guild> getData() {
+		return data;
+	}
+	
+	public void setData(List<Guild> data) {
+		this.data = data;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	@Override
+	public String toString() {
+		return "GuildResponse [currentPage=" + currentPage + ", numberOfPages=" + numberOfPages + ", totalResults="
+				+ totalResults + ", data=" + data + ", status=" + status + "]";
+	}
+	
+}
