@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import co.finalfour.beerme.entity.beer.Beer;
 
@@ -182,14 +183,16 @@ public class Calc {
 		}
 	}
 	
-	public static Double calcAvg(List<Double> list) {
+	public static Integer calcMaxCount(Map<Double,Integer> map) {
 		
-		if (!list.isEmpty()) {
-			Double average = 0.0;
-			for(int i = 0; i < list.size(); i++) {
-				average += list.get(i);
+		if (!map.isEmpty()) {
+			int max = 0;
+			for (Entry<Double, Integer> m : map.entrySet()) {
+				if (m.getValue() > max) {
+					max = m.getValue();
+				}
 			}
-			return average / list.size();
+			return max;
 		} else {
 			return null;
 		}
@@ -198,58 +201,22 @@ public class Calc {
 	public static Double calcMean(List<Double> list) {
 		
 		if (!list.isEmpty()) {
-			Double average = calcAvg(list);
 			Double mean = 0.0;
-			List<Double> over = new ArrayList<>();
-			List<Double> under = new ArrayList<>();
-			List<Double> even = new ArrayList<>();
 			for(int i = 0; i < list.size(); i++) {
-				if (list.get(i) < average) {
-					under.add(list.get(i));
-				} else if (list.get(i) > average) {
-					over.add(list.get(i));
-				} else {
-					even.add(list.get(i));
-				}
+				mean += list.get(i);
 			}
-			if (over.size() == under.size()) {
-				mean = average;
-			} else if (over.size() > under.size()) {
-				Double minOver = over.get(0);
-				for(int it = 1; it < (over.size() - under.size() + 1); it++) {
-					for(int i = 1; i < over.size(); i++) {
-						if (over.get(i) < minOver) {
-							minOver = over.get(i);
-						}
-					}
-					if (it < over.size() - under.size()) {
-						for(int i = 0; i < over.size(); i++) {
-							if (over.get(i) == minOver) {
-								over.remove(i);
-							}
-						}					
-					}
-					mean = minOver;
-				}		
-			} else if (over.size() < under.size()) {
-				Double maxUnder = under.get(0);
-				for(int it = 1; it < (under.size() - over.size() + 1); it++) {
-					for(int i = 1; i < under.size(); i++) {
-						if (under.get(i) < maxUnder) {
-							maxUnder = under.get(i);
-						}
-					}
-					if (it < under.size() - over.size()) {
-						for(int i = 0; i < under.size(); i++) {
-							if (under.get(i) == maxUnder) {
-								under.remove(i);
-							}
-						}					
-					}
-					mean = maxUnder;
-				}			
-			}
-			return mean;
+			return mean / list.size();
+		} else {
+			return null;
+		}
+	}
+	
+	public static Double calcMedian(List<Double> list) {
+		
+		int half = ((list.size() % 2) == 0) ? (list.size() / 2) : (int) ((list.size() / 2) - 0.5);
+		
+		if (!list.isEmpty()) {
+			return (list.get(half) + list.get(half + 1)) / 2;
 		} else {
 			return null;
 		}
@@ -259,6 +226,30 @@ public class Calc {
 		
 		if (!one.isEmpty() && !two.isEmpty()) {
 			return calcMax(one) - calcMin(two);
+		} else {
+			return null;
+		}
+	}
+	
+	public static List<Double> calcMode(List<Double> list) {
+		
+		Map<Double, Integer> map = new HashMap<>();
+		List<Double> returnList = new ArrayList<>();
+		if (!list.isEmpty()) {
+			for (Double d : list) {
+				if (map.containsKey(d)) {
+					map.put(d, map.get(d) + 1);
+				} else {
+					map.put(d, 1);
+				}
+			}
+			int max = calcMaxCount(map);
+			for (Entry<Double, Integer> m : map.entrySet()) {
+				if (m.getValue() == max) {
+					returnList.add(m.getKey());
+				}
+			}
+			return returnList;
 		} else {
 			return null;
 		}
@@ -284,11 +275,17 @@ public class Calc {
 			}
 			calc = calcMean(lists.get(j));
 			if (calc != null) {
+				stats.put(i + "Median", calc);
+			}
+			calc = calcMean(lists.get(j));
+			if (calc != null) {
 				stats.put(i + "Mean", calc);
 			}
-			calc = calcAvg(lists.get(j));
-			if (calc != null) {
-				stats.put(i + "Avg", calc);
+			List<Double> calcList = calcMode(lists.get(j));
+			if (!calcList.isEmpty()) {
+				for (int x = 0; x < calcList.size(); x++) {
+					stats.put(i + "Mode" + x, calcList.get(x));
+				}				
 			}
 				
 			if (i < 5) {
