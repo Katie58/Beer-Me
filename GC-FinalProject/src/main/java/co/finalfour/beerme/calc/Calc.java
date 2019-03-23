@@ -213,9 +213,11 @@ public class Calc {
 	
 	public static Double calcMedian(List<Double> list) {
 		
-		int half = ((list.size() % 2) == 0) ? (list.size() / 2) : (int) ((list.size() / 2) - 0.5);
-		
 		if (!list.isEmpty()) {
+			if (list.size() == 1) {
+				return list.get(0);
+			}
+			int half = ((list.size() % 2) == 0) ? (list.size() / 2) : (int) ((list.size() / 2) - 0.5);
 			return (list.get(half) + list.get(half + 1)) / 2;
 		} else {
 			return null;
@@ -259,41 +261,47 @@ public class Calc {
 		
 		Map<String,Double> stats = new HashMap<>();
 		
-		for (int i = 1, j = 0; i <= 5; i++, j++) {
+		for (int i = 1; i <= 5; i++) {
 			Double calc;
-			calc = calcCount(lists.get(j));
+			calc = calcCount(lists.get(i - 1));
 			if (calc != null) {
+				System.out.println("calcCount");
 				stats.put(i + "Count", calc);
 			}
-			calc = calcMin(lists.get(j));
+			calc = calcMin(lists.get(i - 1));
 			if (calc != null) {
+				System.out.println("calcMin");
 				stats.put(i + "Min", calc);
 			}
-			calc = calcMax(lists.get(j));
+			calc = calcMax(lists.get(i - 1));
 			if (calc != null) {
+				System.out.println("calcMax");
 				stats.put(i + "Max", calc);
 			}
-			calc = calcMean(lists.get(j));
-			if (calc != null) {
-				stats.put(i + "Median", calc);
-			}
-			calc = calcMean(lists.get(j));
+			calc = calcMean(lists.get(i - 1));
 			if (calc != null) {
 				stats.put(i + "Mean", calc);
 			}
-			List<Double> calcList = calcMode(lists.get(j));
-			if (!calcList.isEmpty()) {
+			calc = calcMedian(lists.get(i - 1));
+			if (calc != null) {
+				System.out.println("calcMedian");
+				stats.put(i + "Median", calc);
+			}
+			List<Double> calcList = calcMode(lists.get(i - 1));
+			if (calcList != null) {
+				System.out.println("calcList size: " + calcList.size());
 				for (int x = 0; x < calcList.size(); x++) {
-					stats.put(i + "Mode" + x, calcList.get(x));
+					stats.put(i + "Mode" + (x + 1), calcList.get(x));
 				}				
 			}
 				
 			if (i < 5) {
-				calc = calcOverlap(lists.get(j),lists.get(j + 1));
+				calc = calcOverlap(lists.get(i - 1), lists.get(i));
 				if (calc != null) {
 					stats.put(i + "overlap" + (i + 1), calc);
 				}
 			}
+
 		}		
 		return stats;
 	}
